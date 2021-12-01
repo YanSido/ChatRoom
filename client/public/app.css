@@ -37,7 +37,7 @@ body {
 
 .wrapper .name {
   font-weight: 600;
-  font-size: 1.4rem;
+  font-size: 2rem;
   letter-spacing: 1.3px;
   padding-left: 10px;
   color: #555;
@@ -100,5 +100,14 @@ body {
 textarea {
   resize: none;
   width: 500px;
+  border-radius: 10px;
+}
+
+#login-section {
+  background-color: #eee;
+}
+
+.alert {
+  width: 30%;
   border-radius: 10px;
 }
