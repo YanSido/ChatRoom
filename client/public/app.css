@@ -96,3 +96,9 @@ body {
     padding: 40px 15px 15px 15px;
   }
 }
+
+textarea {
+  resize: none;
+  width: 500px;
+  border-radius: 10px;
+}

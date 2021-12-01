@@ -1,6 +1,9 @@
 import logo from "../img/logo.png";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 function Login(props) {
+  const [username, setUsername] = useState("");
   return (
     <div class="wrapper">
       <div class="logo">
@@ -12,9 +15,19 @@ function Login(props) {
         <div class="form-field d-flex align-items-center">
           {" "}
           <span class="far fa-user"></span>{" "}
-          <input type="text" name="userName" id="userName" placeholder="Username" />{" "}
+          <input
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+            type="text"
+            name="userName"
+            id="userName"
+            placeholder="Username"
+          />{" "}
         </div>
-        <button class="btn mt-3">Login</button>
+        <Link to={`/chat/username=${username}`}>
+          <button class="btn mt-3">Login</button>
+        </Link>
       </form>
     </div>
   );
