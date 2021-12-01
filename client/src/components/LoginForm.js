@@ -25,7 +25,7 @@ function Login(props) {
             placeholder="Username"
           />{" "}
         </div>
-        <Link to={`/chat/username=${username}`}>
+        <Link to={`/chat/?username=${username}`}>
           <button class="btn mt-3">Login</button>
         </Link>
       </form>

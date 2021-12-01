@@ -5,11 +5,25 @@ import MessageBox from "./MessageBox";
 function ChatHistory(props) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+
+  const sse = new EventSource(`http://localhost:8080/chat/${props.username}`);
+  sse.onmessage = (e) => {
+    let jsonData = JSON.parse(e.data);
+    setMessages(jsonData.messages);
+  };
+
   return (
     <>
       <div id="chatHistory">
+        {console.warn("20", messages)}
         {messages.map((message, index) => {
-          return <Message message={message} index={index} />;
+          console.log("21", message);
+          return (
+            <Message
+              message={`${Object.keys(message)[0]}: ${Object.values(message)[0]}`}
+              index={index}
+            />
+          );
         })}
       </div>
 
