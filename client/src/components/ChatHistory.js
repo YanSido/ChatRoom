@@ -5,12 +5,17 @@ import MessageBox from "./MessageBox";
 function ChatHistory(props) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [eventSource, setEventSource] = useState(false);
 
-  const sse = new EventSource(`http://localhost:8080/chat/${props.username}`);
-  sse.onmessage = (e) => {
-    let jsonData = JSON.parse(e.data);
-    setMessages(jsonData.messages);
-  };
+  if (!eventSource) {
+    const sse = new EventSource(`http://localhost:8080/chat/?username=${props.username}`);
+    setEventSource(sse);
+  } else {
+    eventSource.onmessage = (e) => {
+      let jsonData = JSON.parse(e.data);
+      setMessages(jsonData.messages);
+    };
+  }
 
   return (
     <>

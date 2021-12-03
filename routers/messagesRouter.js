@@ -1,9 +1,22 @@
-// const express = require("express");
-// const messagesRouter = express.Router();
-// const fs = require("fs");
-// const path = require("path");
-// const mainPath = __dirname.split("routers")[0];
-// let data = require(`${mainPath}\\public\\db.json`);
+const express = require("express");
+const messagesRouter = express.Router();
+const fs = require("fs");
+const path = require("path");
+const mainPath = __dirname.split("routers")[0];
+let data = require("../controllers/data.json");
+
+messagesRouter.get("/chat/", (req, res, next) => {
+  console.log(req.query.username, "Logged in ...");
+  res.set({
+    "Content-Type": "text/event-stream",
+    Connection: "keep-alive",
+    "Cache-Control": "no-cache",
+  });
+
+  setInterval(() => {
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+  }, 3000);
+});
 
 // function updateDataBase(json) {
 //   fs.writeFile(`${mainPath}\\public\\db.json`, JSON.stringify(json), (err) => {
@@ -44,4 +57,4 @@
 //   }
 // });
 
-// module.exports = messagesRouter;
+module.exports = messagesRouter;
