@@ -2,59 +2,42 @@ const express = require("express");
 const messagesRouter = express.Router();
 const fs = require("fs");
 const path = require("path");
-const mainPath = __dirname.split("routers")[0];
-let data = require("../controllers/data.json");
+const Message = require("../models/messageSchema");
 
-messagesRouter.get("/chat/", (req, res, next) => {
+async function getDatabase() {
+  let data = await Message.find();
+  let messages = [];
+  data.forEach((element) => {
+    let message = {};
+    message[element.username] = element.message;
+    messages.push(message);
+  });
+  return messages;
+}
+
+async function updateDataBase(message) {
+  await Message.create({ username: Object.keys(message)[0], message: Object.values(message)[0] });
+}
+
+messagesRouter.get("/chat/", async (req, res, next) => {
   console.log(req.query.username, "Logged in ...");
   res.set({
     "Content-Type": "text/event-stream",
     Connection: "keep-alive",
     "Cache-Control": "no-cache",
   });
-
-  setInterval(() => {
-    res.write(`data: ${JSON.stringify(data)}\n\n`);
-  }, 3000);
+  let messages = await getDatabase();
+  setInterval(async () => {
+    messages = await getDatabase();
+    res.write(`data: ${JSON.stringify(messages)}\n\n`);
+  }, 1000);
 });
 
-// function updateDataBase(json) {
-//   fs.writeFile(`${mainPath}\\public\\db.json`, JSON.stringify(json), (err) => {
-//     if (err) {
-//       res.send(err);
-//     }
-//   });
-// }
-
-// messagesRouter.put("/chat", (req, res) => {
-//   let newUrl = `${homeUrl}/${req.params.newUrl}`;
-//   let usernames = Object.keys(json);
-//   let objectsUrl = [];
-//   usernames.forEach((element) => {
-//     objectsUrl.push(json[element]);
-//   });
-
-//   let keys = [];
-//   objectsUrl.forEach((element) => {
-//     keys.push(Object.keys(element));
-//   });
-//   let newKeys = [];
-//   for (let i = 0; i < keys.length; i++) {
-//     keys[i].forEach((element) => {
-//       newKeys.push(element);
-//     });
-//   }
-
-//   for (let i = 0; i < objectsUrl.length; i++) {
-//     for (let a = 0; a < newKeys.length; a++) {
-//       if (objectsUrl[i][newKeys[a]]) {
-//         if (objectsUrl[i][newKeys[a]].newUrl === newUrl)
-//           json[getKeyByValue(json, objectsUrl[i])][newKeys[a]].urlClicked += 1;
-//         updateDataBase(json);
-//         res.redirect(newKeys[a]);
-//       }
-//     }
-//   }
-// });
+messagesRouter.post("/chat/", (req, res, next) => {
+  const username = req.query.username;
+  const message = req.body.message;
+  updateDataBase({ [username]: message });
+  res.write("SENT");
+});
 
 module.exports = messagesRouter;

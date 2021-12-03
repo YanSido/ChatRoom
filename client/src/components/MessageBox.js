@@ -1,4 +1,23 @@
-function MessageBox({ message, setMessage, setMessages }) {
+import axios from "axios";
+
+const URL = "http://localhost:8080";
+
+function MessageBox({ username, message, setMessage, setMessages }) {
+  async function sendMessage(messageText) {
+    try {
+      await axios.post(
+        `${URL}/chat/?username=${username}`,
+        {
+          message: messageText,
+        }
+        // {
+        //   headers: {
+        //     Auth: accessToken,
+        //   },
+        // }
+      );
+    } catch {}
+  }
   return (
     <>
       <textarea
@@ -7,15 +26,14 @@ function MessageBox({ message, setMessage, setMessages }) {
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
-            setMessage(e.target.value);
-            setMessages((messages) => [...messages, message]);
+            sendMessage(message);
             setMessage("");
           }
         }}
       ></textarea>
       <button
         onClick={(e) => {
-          setMessages((messages) => [...messages, message]);
+          sendMessage(message);
           setMessage("");
         }}
       >
