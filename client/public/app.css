@@ -129,3 +129,7 @@ textarea {
   height: 400px;
   scroll-padding-bottom: 0;
 }
+
+svg {
+  cursor: pointer;
+}
