@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { EventEmitter } = require("stream");
 const Message = require("../models/messageSchema");
+let USERS = [];
 
 async function getDatabase() {
   let data = await Message.find();
@@ -17,6 +18,23 @@ async function getDatabase() {
   return messages;
 }
 
+function toggleLogOut(user) {
+  USERS.forEach((element) => {
+    if (Object.keys(element)[0] === user) element[user] = "Logged out";
+  });
+}
+
+function toggleLogIn(user) {
+  let changed = false;
+  USERS.forEach((element) => {
+    if (Object.keys(element)[0] === user) {
+      element[user] = "Logged in";
+      changed = true;
+    }
+  });
+  return changed;
+}
+
 async function updateDataBase(message) {
   await Message.create({
     username: Object.keys(message)[0],
@@ -25,9 +43,17 @@ async function updateDataBase(message) {
   });
 }
 
+messagesRouter.put("/chat/", async (req, res, next) => {
+  data = await getDatabase();
+  console.log(data);
+  next();
+});
+
 messagesRouter.get("/chat/", async (req, res, next) => {
   let username = req.query.username;
   console.log(username, "Logged in ...");
+  if (!toggleLogIn(username)) USERS.push({ [username]: "Logged in" });
+
   res.set({
     "Content-Type": "text/event-stream",
     Connection: "keep-alive",
@@ -39,11 +65,12 @@ messagesRouter.get("/chat/", async (req, res, next) => {
   req.on("close", () => {
     console.log(username, "Logged out");
     updateDataBase({ [username]: " Logged out" });
+    toggleLogOut(username);
     next();
   });
   setInterval(async () => {
     messages = await getDatabase();
-    res.write(`data: ${JSON.stringify(messages)}\n\n`);
+    res.write(`data: ${JSON.stringify({ messages: messages, users: USERS })}\n\n`);
   }, 1000);
 });
 

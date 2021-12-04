@@ -1,5 +1,4 @@
 import ChatHistory from "./ChatHistory";
-import ParticipantBox from "./ParticipantBox";
 import { useLocation } from "react-router";
 
 function ChatRoom(props) {
@@ -12,7 +11,6 @@ function ChatRoom(props) {
   return (
     <>
       <ChatHistory username={Username()} />
-      <ParticipantBox />
     </>
   );
 }
