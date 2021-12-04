@@ -2,21 +2,15 @@ import axios from "axios";
 
 const URL = "http://localhost:8080";
 
-function MessageBox({ username, message, setMessage, setMessages }) {
+function MessageBox({ username, message, setMessage }) {
   async function sendMessage(messageText) {
     try {
-      await axios.post(
-        `${URL}/chat/?username=${username}`,
-        {
-          message: messageText,
-        }
-        // {
-        //   headers: {
-        //     Auth: accessToken,
-        //   },
-        // }
-      );
-    } catch {}
+      await axios.post(`${URL}/chat/?username=${username}`, {
+        message: messageText,
+      });
+    } catch (err) {
+      alert(err);
+    }
   }
   return (
     <>

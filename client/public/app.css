@@ -9,6 +9,7 @@
 
 body {
   background: #ecf0f3;
+  text-align: center;
 }
 
 .wrapper {
@@ -117,4 +118,14 @@ textarea {
   justify-content: center;
   flex-direction: row;
   align-items: center;
+}
+
+#chat-history {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 400px;
+  scroll-padding-bottom: 0;
 }

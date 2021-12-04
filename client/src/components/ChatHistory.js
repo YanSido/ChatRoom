@@ -13,19 +13,21 @@ function ChatHistory(props) {
   } else {
     eventSource.onmessage = (e) => {
       let jsonData = JSON.parse(e.data);
+      // console.log(jsonData);
       setMessages(jsonData);
     };
   }
 
   return (
     <>
-      <div id="chatHistory">
+      <div id="chat-history">
         {/* {console.warn("20", messages)} */}
         {messages.map((message, index) => {
           // console.log("21", message);
           return (
             <Message
               message={`${Object.keys(message)[0]}: ${Object.values(message)[0]}`}
+              date={`${Object.values(message)[1].toString().split("T")[1].split(".")[0]}`}
               index={index}
             />
           );
