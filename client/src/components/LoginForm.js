@@ -1,4 +1,3 @@
-import logo from "../img/logo.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -7,11 +6,7 @@ function Login(props) {
 
   return (
     <div class="wrapper">
-      <div class="logo">
-        {" "}
-        <img src={logo} alt="" />{" "}
-      </div>
-      <div class="name"> Sido </div>
+      <label id="username-label">Enter Username:</label>
       <div class="form-field d-flex align-items-center">
         {" "}
         <span class="far fa-user"></span>{" "}

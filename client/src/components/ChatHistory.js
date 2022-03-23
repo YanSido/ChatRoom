@@ -14,10 +14,13 @@ function ChatHistory(props) {
     setEventSource(sse);
   } else {
     eventSource.onmessage = (e) => {
-      let jsonData = JSON.parse(e.data);
-      console.log(jsonData);
-      setMessages(jsonData.messages);
-      setUsers(jsonData.users);
+      try {
+        let jsonData = JSON.parse(e.data);
+        setMessages(jsonData.messages);
+        setUsers(jsonData.users);
+      } catch (e) {
+        console.log(e);
+      }
     };
   }
 

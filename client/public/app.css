@@ -36,6 +36,10 @@ body {
     -8px -8px 15px #fff;
 }
 
+#username-label {
+  margin-right: 55%;
+}
+
 .wrapper .name {
   font-weight: 600;
   font-size: 2rem;
