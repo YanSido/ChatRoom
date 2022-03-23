@@ -12,6 +12,9 @@ app.use("/public", express.static(`./client/public`));
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/client/public/index.html");
+});
 
 app.use("/", messagesRouter);
 
