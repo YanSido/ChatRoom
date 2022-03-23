@@ -9,6 +9,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use("/public", express.static(`./client/public`));
 
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
 app.use("/", messagesRouter);
 
 module.exports = app;
